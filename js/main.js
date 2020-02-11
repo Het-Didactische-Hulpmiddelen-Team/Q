@@ -1,4 +1,5 @@
 const queue = document.querySelector('#students');
+$('#logout-button').css('display', 'none');
 
 db.collection('queue').orderBy('datetime').onSnapshot(snapshot => {
   let changes = snapshot.docChanges();
@@ -52,5 +53,5 @@ function login(){
 function logout(){
   $('#logout-button').css('display', 'none');
   $('#login-button').css('display', 'inline-block');
-  $('#user').innerHTML = "";
+  document.querySelector('#user').innerHTML = "";
 }
