@@ -33,7 +33,7 @@ function login(){
   let span = document.createElement('span');
 
   span.textContent = `Logged in as ${firstname} ${lastname}`;
-  user.appendChild(span);
+  user.innerHTML = span;
 
   console.log(firstname);
   console.log(lastname);
