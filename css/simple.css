@@ -1,0 +1,50 @@
+.container-bg {
+  background-color: #181712;
+}
+
+#searchTerm {
+  background-color: #181712;
+  color: #fefefe;
+}
+
+.input-group-btn {
+  background-color: #B7AB5C;
+}
+
+#song_list table th,#search_list table th{
+  color: #fefefe;
+  background-color: #6A6A6A;
+}
+
+.color-white {
+  color: #FFFFFF;
+  text-shadow: 5px 5px 5px black;
+}
+
+img{
+  float: left;
+  width: 3em;
+  height: 3em;
+}
+
+#song i{
+  float: right;
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+}
+
+.up {
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+}
+
+.down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
+.checkbox{
+  float: right;
+}
