@@ -31,8 +31,8 @@ function login(){
   let firstname = splittedemail[0];
   let lastname = splittedemail[1].split("@")[0];
   let span = document.createElement('span');
-  
-  span.textContent = `Logged in as ${firstname} ${lastname}`
+
+  span.textContent = `Logged in as ${firstname} ${lastname}`;
   user.appendChild(span);
 
   console.log(firstname);
