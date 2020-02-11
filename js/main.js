@@ -45,7 +45,7 @@ function login(){
     user.appendChild(span); 
 
     // close modal
-    $("#modal-login").modal("toggle");
+    document.querySelector("#close-modal").click();
 
     // show logout button and enterQ button
     $('#logout-button').css('display', 'inline-block');
