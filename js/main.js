@@ -77,5 +77,12 @@ function enterQ(){
   db.collection('queue').add({
     name: name,
     datetime: d
-});
+  });
+}
+
+function showLoginButton(){
+  $('#login-button').css('display', 'inline-block');
+}
+function hideLoginButton(){
+  $('#login-button').css('display', 'none');
 }
