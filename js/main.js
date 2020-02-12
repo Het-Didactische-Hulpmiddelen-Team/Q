@@ -83,10 +83,9 @@ function logout(){
   document.querySelector('#user').innerHTML = "";
 }
 
-async function enterQ(){
+function enterQ(){
   // DO NOTHING WHEN ALREADY IN Q
-  let inQ = await checkIfInQ()
-  console.log(inQ);
+  let inQ = checkIfInQ()
   if (inQ) return;
 
   // ADD TO Q HAPPY PATH
