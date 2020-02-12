@@ -18,7 +18,7 @@ db.collection('queue').orderBy('datetime').onSnapshot(snapshot => {
       if(change.type == 'added'){
           displayName(change.doc);
       } else if (change.type == 'removed'){
-          let li = queue.querySelector('[data-id=' + change.doc.id + ']');
+          let li = document.querySelector('[data-id=' + change.doc.id + ']');
           queue.removeChild(li);
           removeA(names, change.doc.data().name);
       }
