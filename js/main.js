@@ -1,3 +1,7 @@
+// TO DO
+// INGELOGT BIJ OPSTART
+// kruisje laten zien als vogels is ingelogtop een manier
+
 showLoginButton();
 hideLogoutButton();
 hideEnterQButton();
@@ -27,7 +31,7 @@ function displayName(doc) {
   li.className = 'list-group-item text-center';
   span.textContent = doc.data().name;
 
-  if (isAuthorizedUser()){
+  if (isAuthorizedUser() || true){
     // CROSS TO DELETE THE RECORD FROM Q FOR ADMIN
     var d = document.createElement('div');
     d.className = "cross";
