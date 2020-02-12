@@ -17,6 +17,7 @@ db.collection('queue').orderBy('datetime').onSnapshot(snapshot => {
   changes.forEach(change => {
       if(change.type == 'added'){
           displayName(change.doc);
+          showCrosses();
       } else if (change.type == 'removed'){
           let li = document.querySelector('[data-id=' + change.doc.id + ']');
           queue.removeChild(li);
@@ -34,23 +35,15 @@ function displayName(doc) {
   span.textContent = doc.data().name;
   names.push(doc.data().name);
 
-  if (isAuthorizedUser() || true){
-    // CROSS TO DELETE THE RECORD FROM Q FOR ADMIN
-    var d = document.createElement('div');
-    d.className = "cross";
-    d.innerHTML = "&times;";
-    d.style.color = 'red';
-    d.style.position = 'absolute';
-    d.style.top = '0';
-    d.style.left = '20';
-    d.style.cursor = 'pointer';
-    d.addEventListener('click', e => {
-      e.preventDefault();
-      deleteFromQ();
-      li.style.position = 'relative';
-      li.appendChild(d);
-    });
-  }
+  // CROSS TO DELETE THE RECORD FROM Q FOR ADMIN
+  var d = document.createElement('div');
+  d.className = "cross";
+  d.innerHTML = "&times;";
+  d.addEventListener('click', e => {
+    e.preventDefault();
+    deleteFromQ(doc.id);
+  });
+  li.appendChild(d);
   li.appendChild(span);
   queue.appendChild(li);
 }
@@ -68,23 +61,28 @@ function login(){
     name = firstname + " " + lastname;
 
     // show logged in user
-    span.textContent = `Logged in as ${name}`;
+    span.innerHTML = `Logged in as <strong>${name}</strong>`;
     user.innerHTML = "";
     user.appendChild(span); 
 
     // close modal
     document.querySelector("#close-modal").click();
 
+    names.includes(name) ? showLeaveQButton() : showEnterQButton();
+
+    showCrosses();
     showLogoutButton();
-    showEnterQButton();
     hideLoginButton();
   }
 }
 function logout(){
+  hideCrosses();
   hideLogoutButton();
   hideEnterQButton();
+  hideLeaveQButton();
   showLoginButton();
   document.querySelector('#user').innerHTML = "";
+  name = "";
 }
 
 function enterQ(){
@@ -131,7 +129,9 @@ function deleteFromQ(docid){
 }
 function isAuthorizedUser(){
   // DUMMY AUTHORIZATION
-  return name.toLowerCase() == "frederik vogels" || name.toLowerCase() == "fréderik vogels";
+  var res = name.toLowerCase() == "frederik vogels" || name.toLowerCase() == "fréderik vogels";
+  console.log(res);
+  return res;
 }
 
 // WHY ARE YOU HIDINGGGGGG
@@ -158,6 +158,20 @@ function showLeaveQButton(){
 }
 function hideLeaveQButton(){
   $('#leaveQ-button').css('display', 'none');
+}
+function showCrosses(){
+  if (isAuthorizedUser()){
+    var r = document.getElementsByClassName("cross");
+    for(i = 0; i < r.length; i++){
+      r[i].style.display = "block";
+    }
+  }
+}
+function hideCrosses(){
+  var r = document.getElementsByClassName("cross");
+  for(i = 0; i < r.length; i++){
+    r[i].style.display = "none";
+  }
 }
 
 
