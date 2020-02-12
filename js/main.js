@@ -4,6 +4,7 @@ hideLeaveQButton();
 
 const queue = document.querySelector('#students');
 let name = "";
+let names = [];
 
 // SHOW Q WITH REALTIME UPDATES
 db.collection('queue').orderBy('datetime').onSnapshot(snapshot => {
@@ -14,6 +15,7 @@ db.collection('queue').orderBy('datetime').onSnapshot(snapshot => {
       } else if (change.type == 'removed'){
           let li = queue.querySelector('[data-id=' + change.doc.id + ']');
           queue.removeChild(li);
+          removeA(names, change.doc.data().name);
       }
   });
 });
@@ -25,6 +27,7 @@ function displayName(doc) {
   li.setAttribute('data-id', doc.id); 
   li.className = 'list-group-item text-center';
   span.textContent = doc.data().name;
+  names.push(doc.data().name);
 
   li.appendChild(span);
   queue.appendChild(li);
@@ -62,9 +65,11 @@ function logout(){
   document.querySelector('#user').innerHTML = "";
 }
 
-function enterQ(){
+async function enterQ(){
   // DO NOTHING WHEN ALREADY IN Q
-  if (checkIfInQ()) return;
+  let inQ = await checkIfInQ()
+  console.log(inQ);
+  if (inQ) return;
 
   // ADD TO Q HAPPY PATH
   var today = new Date();
@@ -83,14 +88,7 @@ function enterQ(){
 }
 
 function checkIfInQ(){
-  db.collection('queue').where("name", "==", name).get()
-  .then((e) => {
-    e.forEach(e => console.log(e.id, e.data().name, e.data().datetime));
-    return true;
-  }).catch((e) => {
-    console.log("An error occured: " + e);
-  });
-  return false;
+  return names.includes(name);
 }
 
 function leaveQ(){
@@ -121,4 +119,16 @@ function showLeaveQButton(){
 }
 function hideLeaveQButton(){
   $('#leaveQ-button').css('display', 'none');
+}
+
+
+function removeA(arr) {
+  var what, a = arguments, L = a.length, ax;
+  while (L > 1 && arr.length) {
+      what = a[--L];
+      while ((ax= arr.indexOf(what)) !== -1) {
+          arr.splice(ax, 1);
+      }
+  }
+  return arr;
 }
