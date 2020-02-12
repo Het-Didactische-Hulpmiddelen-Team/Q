@@ -80,6 +80,9 @@ function enterQ(){
     name: name,
     datetime: d
   });
+
+  showLeaveQButton();
+  hideEnterQButton();
 }
 
 function checkIfInQ(){
@@ -94,7 +97,19 @@ function checkIfInQ(){
 }
 
 function leaveQ(){
-  // TO DO
+  db.collection('queue').where("name", "==", name).get()
+  .then((e) => {
+    e.forEach(doc => {
+      db.collection('queue').doc(doc.id).delete().then( 
+        _ => console.log("Document successfully deleted!"))
+        .catch( err => console.error("Error removing document: ", err));
+    }
+  )}).catch((e) => {
+    console.log("An error occured: " + e);
+  });
+  
+  showEnterQButton();
+  hideLeaveQButton();
 }
 
 // WHY ARE YOU HIDINGGGGGG
