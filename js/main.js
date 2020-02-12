@@ -1,3 +1,4 @@
+showLoginButton();
 hideLogoutButton();
 hideEnterQButton();
 hideLeaveQButton();
@@ -29,6 +30,23 @@ function displayName(doc) {
   span.textContent = doc.data().name;
   names.push(doc.data().name);
 
+  if (isAuthorizedUser()){
+    // CROSS TO DELETE THE RECORD FROM Q FOR ADMIN
+    var d = document.createElement('div');
+    d.className = "cross";
+    d.innerHTML = "&times;";
+    d.style.color = 'red';
+    d.style.position = 'absolute';
+    d.style.top = '0';
+    d.style.left = '20';
+    d.style.cursor = 'pointer';
+    d.addEventListener('click', e => {
+      e.preventDefault();
+      deleteFromQ();
+      li.style.position = 'relative';
+      li.appendChild(d);
+    });
+  }
   li.appendChild(span);
   queue.appendChild(li);
 }
@@ -85,6 +103,9 @@ async function enterQ(){
     name: name,
     datetime: d
   });
+
+  showLeaveQButton();
+  hideEnterQButton();
 }
 
 function checkIfInQ(){
@@ -92,7 +113,22 @@ function checkIfInQ(){
 }
 
 function leaveQ(){
-  // TO DO
+  db.collection('queue').where("name", "==", name).get()
+  .then(e => e.forEach(doc => deleteFromQ(doc.id)))
+  .catch(e => console.log("An error occured: " + e));
+  
+  showEnterQButton();
+  hideLeaveQButton();
+}
+
+function deleteFromQ(docid){
+  db.collection('queue').doc(docid).delete().then( 
+    _ => console.log("Document successfully deleted!"))
+    .catch( err => console.error("Error removing document: ", err));
+}
+function isAuthorizedUser(){
+  // DUMMY AUTHORIZATION
+  return name.toLowerCase() == "frederik vogels" || name.toLowerCase() == "fréderik vogels";
 }
 
 // WHY ARE YOU HIDINGGGGGG
