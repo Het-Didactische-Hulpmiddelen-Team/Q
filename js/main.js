@@ -1,8 +1,11 @@
+hideLogoutButton();
+hideEnterQButton();
+hideLeaveQButton();
+
 const queue = document.querySelector('#students');
-$('#logout-button').css('display', 'none');
-$('#enterQ-button').css('display', 'none');
 let name = "";
 
+// SHOW Q WITH REALTIME UPDATES
 db.collection('queue').orderBy('datetime').onSnapshot(snapshot => {
   let changes = snapshot.docChanges();
   changes.forEach(change => {
@@ -29,7 +32,7 @@ function displayName(doc) {
 
 function login(){
   let email = document.querySelector('#email').value.trim();
-  let regex = new RegExp('\\w{3,}\\.\\w{3,}@(student\\.)?ucll\\.be');
+  let regex = new RegExp('\\w{2,}\\.\\w{2,}@(student\\.)?ucll\\.be');
   if(regex.test(email)){
     // get firstname and name from email
     let user = document.querySelector('#user');
@@ -47,24 +50,23 @@ function login(){
     // close modal
     document.querySelector("#close-modal").click();
 
-    // show logout button and enterQ button
-    $('#logout-button').css('display', 'inline-block');
-    $('#enterQ-button').css('display', 'inline-block');
-    // hide login button
-    $('#login-button').css('display', 'none');
+    showLogoutButton();
+    showEnterQButton();
+    hideLoginButton();
   }
 }
 function logout(){
-  $('#logout-button').css('display', 'none');
-  $('#enterQ-button').css('display', 'none');
-  $('#login-button').css('display', 'inline-block');
+  hideLogoutButton();
+  hideEnterQButton();
+  showLoginButton();
   document.querySelector('#user').innerHTML = "";
 }
 
 function enterQ(){
-// TO DO CHECK IF ALREADY IN Q
-// SHOW / MAKE LEAVE Q BUTTON
+  // DO NOTHING WHEN ALREADY IN Q
+  if (checkIfInQ()) return;
 
+  // ADD TO Q HAPPY PATH
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, '0');
   var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -80,9 +82,43 @@ function enterQ(){
   });
 }
 
+function checkIfInQ(){
+  db.collection('queue').where("name", "==", name).get()
+  .then((e) => {
+    e.forEach(e => console.log(e.id, e.data().name, e.data().datetime));
+    return true;
+  }).catch((e) => {
+    console.log("An error occured: " + e);
+  });
+  return false;
+}
+
+function leaveQ(){
+  // TO DO
+}
+
+// WHY ARE YOU HIDINGGGGGG
 function showLoginButton(){
   $('#login-button').css('display', 'inline-block');
 }
 function hideLoginButton(){
   $('#login-button').css('display', 'none');
+}
+function showLogoutButton(){
+  $('#logout-button').css('display', 'inline-block');
+}
+function hideLogoutButton(){
+  $('#logout-button').css('display', 'none');
+}
+function showEnterQButton(){
+  $('#enterQ-button').css('display', 'inline-block');
+}
+function hideEnterQButton(){
+  $('#enterQ-button').css('display', 'none');
+}
+function showLeaveQButton(){
+  $('#leaveQ-button').css('display', 'inline-block');
+}
+function hideLeaveQButton(){
+  $('#leaveQ-button').css('display', 'none');
 }
