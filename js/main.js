@@ -1,7 +1,3 @@
-// TO DO
-// INGELOGT BIJ OPSTART
-// kruisje laten zien als vogels is ingelogtop een manier
-
 showLoginButton();
 hideLogoutButton();
 hideEnterQButton();
@@ -134,7 +130,7 @@ function isAuthorizedUser(){
   return res;
 }
 
-// WHY ARE YOU HIDINGGGGGG
+// BUTTONS
 function showLoginButton(){
   $('#login-button').css('display', 'inline-block');
 }
